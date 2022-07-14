@@ -1,0 +1,24 @@
+<div class="commentary">
+	<div class="user">
+		<b><?=$commentary['author']?></b><br />
+		<? if (empty($commentary['avatar'])) { ?>
+		<img src="/images/guest.png" height="32px" />
+		<? }else{ ?>
+		<img src="<?=$commentary['avatar']?>" height="32px" />
+		<? } ?>
+	</div>
+	<div class="text">
+		<div class="arrow_box">
+			<div class="head">
+				<span class="time"><?=$commentary['timestamp']?>&nbsp;</span><br />
+			</div>
+			<div class="text">
+				<?=strip_tags($commentary['commentary'])?>
+			</div>
+			<div class="rating">
+				Рейтинг товара:&nbsp;<img src="/images/rating_<?=$commentary['rating']?>.png" height="12px" /><br />
+				Рейтинг отзыва:&nbsp;<?=$commentary['commrating'] == null ? "нет оценок" : $commentary['commrating']?>
+			</div>
+		</div>
+	</div>
+</div>

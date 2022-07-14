@@ -1,0 +1,18 @@
+{
+	"name":		"storeinfo",
+	"fields":
+	{
+		"paramid":
+		{
+			"type":		"TINYTEXT"
+		},
+		"paramidtext":
+		{
+			"type":		"TINYTEXT"
+		},
+		"paramval":
+		{
+			"type":		"TINYTEXT"
+		}
+	}
+}

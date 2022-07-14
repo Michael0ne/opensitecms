@@ -1,0 +1,11 @@
+<?
+if (empty($_GET['s'])) {
+?>
+<b><font color=red>Пустой запрос.</font></b>
+<?
+}else{
+?>
+<b><font color=red>По запросу <?=$this->searchq?> ничего не найдено.</font></b>
+<?
+}
+?>

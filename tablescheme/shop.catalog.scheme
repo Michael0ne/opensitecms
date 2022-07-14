@@ -1,0 +1,39 @@
+{
+	"name":		"catalog",
+	"keys":
+	{
+		"id":	"PRIMARY KEY AUTO_INCREMENT"
+	},
+	"fields":
+	{
+		"id":
+		{
+			"type":		"INT"
+		},
+		"title":
+		{
+			"type":		"TINYTEXT",
+			"defval":	"NOT NULL"
+		},
+		"description":
+		{
+			"type":		"TINYTEXT",
+			"defval":	"NOT NULL"
+		},
+		"category":
+		{
+			"type":		"TINYTEXT",
+			"defval":	"NOT NULL"
+		},
+		"date":
+		{
+			"type":		"DATETIME",
+			"defval":	"CURRENT_TIMESTAMP"
+		},
+		"options":
+		{
+			"type":		"JSON",
+			"defval":	"NOT NULL"
+		}
+	}
+}

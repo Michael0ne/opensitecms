@@ -1,0 +1,6 @@
+<b>Найдено <?= count($this->searchr) ?> <?= $this->getNumEnding(count($this->searchr), array('результат', 'результата', 'результатов')) ?> по запросу <i><?=$this->searchq?></i>.</b><br />
+<ol>
+<? foreach ($this->searchr as $result_)
+	include("html/search." . $this->page . ".item.html");
+?>
+</ol>

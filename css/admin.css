@@ -1,0 +1,16 @@
+.table tr.table-row > td {
+	cursor: pointer;
+}
+
+.table tr.table-row-selected {
+	cursor: pointer;
+	background-color: #eee;
+}
+
+.table tr.table-row-selected > td {
+	font-weight: 500;
+}
+
+.table tr.table-row:hover {
+	background-color: #eee
+}

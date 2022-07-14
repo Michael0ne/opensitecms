@@ -1,0 +1,44 @@
+<div class="categgrid">
+	<b>Категории</b>
+	<div class="grid">
+		<ul>
+		<?
+			foreach ($this->categories as $c)
+			{
+				print "<li><span class=\"tagbtn\">";
+				if (isset($this->params["category"]) &&
+					$c == $this->params["category"])
+					print "<b>{$c}</b>";
+				else
+					print "<a href=\"/catalog/category/{$c}\">{$c}</a>";
+				print "</span></li>";
+			}
+		?>
+		</ul>
+	</div>
+</div>
+<div class="itemsgrid">
+	<b>Всего товаров:&nbsp;<?= count($this->items) ?></b>
+	<? if (count($this->items) > 10): ?>
+	<br />
+	<div class="fr">
+		Выводить по <a href="/catalog/?count=10">10</a>&nbsp;<a href="/catalog/?count=20">15</a>&nbsp;<a href="/catalog/?count=20">20</a>
+	</div>
+	<? endif ?>
+	<div class="catgrid">
+		<div class="items">
+<?
+	$index = 1;
+	foreach ($this->items as $itemInfo)
+	{
+		$this->DisplayOne($itemInfo['id']);
+		if ($index % 2 == 0 || $index == count($this->items))
+			print "<div class=\"clearfix\"></div>";
+
+		$index++;
+	}
+?>
+		</div>
+	</div>
+</div>
+<div class="clearfix"></div>

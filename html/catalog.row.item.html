@@ -1,0 +1,17 @@
+<div class="item">
+	<div class="image">
+		<img src="<?= $item['img'] ?>" width="100px" alt="<?= $item['title'] ?>" />
+	</div>
+	<div class="info">
+		<a href="/catalog/item/<?= $item['id']?>"><?= $item['title']?></a>
+		<br />
+		<span class="details">
+			<?= $item['brief'] ?>
+		</span>
+	</div>
+	<div class="clearfix"></div>
+	<div class="actions">
+		<a class="button-link blue" href="#"><?= $item['price']?>₽</a>&nbsp;
+		<a class="button-link green" href="#">в корзину</a>
+	</div>
+</div>

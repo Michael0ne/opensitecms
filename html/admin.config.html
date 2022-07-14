@@ -1,0 +1,79 @@
+<h1 class="page-header">Настройки сайта</h1>
+<p>Отредактируйте основные параметры вашего сайта прямо отсюда.<br />Для редактирования параметра, просто нажмите на его значение.</p>
+<div class="btn-group btn-group-sm" role="group" aria-label="Управление параметрами">
+	<button type="button" class="btn btn-outline-success">Добавить</button>
+	<button type="button" hidden class="btn btn-outline-warning">Редактировать</button>
+	<button type="button" hidden class="btn btn-outline-danger">Удалить</button>
+</div>
+<br />
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">Параметр</th>
+			<th scope="col">Значение</th>
+		</tr>
+	</thead>
+	<tbody class="table-group-divider">
+		<?
+		foreach ($this->shopInfo as $id => $prop)
+			print "<tr id=\"config-{$id}\" class=\"table-row\"><td>{$prop['title']}</td><td>{$prop['value']}</td></tr>";
+		?>
+	</tbody>
+</table>
+
+<script>
+let selectedConfigurationValues = new function() {
+	this.size = function() {
+		let properties = 0;
+
+		Object.entries(this).forEach(function(prop) {
+			if (typeof prop[1] == "boolean" && prop[1] == true)
+				properties++;
+		});
+		
+		return properties;
+	};
+};
+
+const buttonAdd = document.getElementsByClassName('btn-outline-success')[0];
+const buttonEdit = document.getElementsByClassName('btn-outline-warning')[0];
+const buttonRemove = document.getElementsByClassName('btn-outline-danger')[0];
+
+const configRows = document.getElementsByClassName('table-row');
+
+document.addEventListener("DOMContentLoaded", function() {
+	Array.from(configRows).forEach(function(node) {
+		node.addEventListener("click", ConfigRowClick);
+	});
+});
+
+function ConfigRowClick() {
+	const rowConfigId = this.getAttribute('id');
+	if (rowConfigId === null)
+		return;
+
+	const rowConfigIsSelected = this.hasAttribute('selected') ? true : false;
+	
+	selectedConfigurationValues[rowConfigId] = !rowConfigIsSelected;
+	if (rowConfigIsSelected) {
+		this.removeAttribute('selected');
+		this.setAttribute('class', 'table-row');
+	}else{
+		this.setAttribute('selected', '');
+		this.setAttribute('class', 'table-row-selected');
+	}
+	
+	if (selectedConfigurationValues.size() > 0) {
+		if (selectedConfigurationValues.size() == 1) {
+			buttonEdit.removeAttribute('hidden');
+			buttonRemove.removeAttribute('hidden');
+		}else{
+			buttonRemove.removeAttribute('hidden');
+			buttonEdit.setAttribute('hidden', '');
+		}
+	}else{
+		buttonEdit.setAttribute('hidden', '');
+		buttonRemove.setAttribute('hidden', '');
+	}
+}
+</script>

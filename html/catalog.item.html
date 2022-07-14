@@ -1,0 +1,85 @@
+<table id="item"<?= isset($this->itemInfo['promo-bg']) ? "style=\"background: url(" . $this->itemInfo['promo-bg'] . ") no-repeat" : "" ?><?= isset($this->itemInfo['promo-text-clr']) ? "; color: " . $this->itemInfo['promo-text-clr'] . "\"" : "\"" ?>>
+	<tr id="item-info">
+		<td id="item-image">
+				<? if (empty($this->itemInfo['img'])) { ?>
+				<img style="padding: 10px 0" src="/images/no_image.png" height="40%" alt="<?=$item['title']?>" />
+				<? }else{ ?>
+				<img src="<?= $this->itemInfo['img'] ?>" height=40% />
+				<? } ?>
+		</td>
+		<td id="item-info-detailed">
+			<div id="item-title">
+				<b><?= $this->itemInfo['title'] ?></b>
+			</div>
+			<!-- цена -->
+			<div id="item-price">
+				<? if (isset($this->itemInfo['unreleased']) || isset($this->itemInfo['nostock'])) {?>
+				<i>товара нет в наличии</i>
+				<?}else{?>
+				<? if (isset($this->itemInfo['price-m'])) { ?>
+					<span id="item-price-special">
+						<s><?= $this->itemInfo['price'] ?> руб.</s><br />
+						<font color="red"><?= $this->itemInfo['price-m'] ?>₽</font>
+					</span>
+				<? }else{ ?>
+					<?= $this->itemInfo['price'] ?>₽
+				<? } }?>
+			</div>
+			<div id="item-description">
+				<?= $this->itemInfo['description'] ?>
+			</div>
+			<!-- теги -->
+			<div id="item-tags">
+				<b>Теги:</b>&nbsp;
+				<?
+					$tags = explode('/', rtrim($this->itemInfo['category'], '/'));
+					array_shift($tags);
+
+					if (!empty($tags) && $tags[0] != null) {
+						foreach ($tags as $tagName)
+							print "<span class=\"item-tags-tag\"><a href=\"/catalog/category/" . $tagName . "\">" . $tagName . "</a></span>";
+					}else{
+						print "нет тегов";
+					}
+				?>
+			</div>
+			<div id="item-buy">
+				<button id="item-buy-button">Купить</button>
+			</div>
+		</td>
+	</tr>
+	<!-- Похожие товары -->
+	<tr id="similar-items">
+		<td></td>
+		<? if (empty($this->itemsAlike) == false) { ?>
+		<td>
+			<b>Смотрите также:</b><br />
+			<?
+				foreach ($this->itemsAlike as $item)
+					print "<span class=\"item-similar\"><a href=\"{$item['id']}\" target=\"_blank\"><img src=\"{$item['img']}\" alt=\"{$item['title']}\" width=\"64\" height=\"64\" /><b>{$item['title']}</b></a></span>";
+			?>
+		</td>
+		<? }else{ ?>
+		<td>
+			<b>Похожих товаров нет</b>
+		</td>
+		<? } ?>
+	</tr>
+	<!-- комментарии -->
+	<tr id="comments">
+		<td></td>
+		<? if (!empty($this->comments)) { ?>
+		<td>
+			<b>Отзывы (<?=count($this->comments)?>):</b><br />
+			<?
+			foreach ($this->comments as $commentary)
+				include("html/catalog.commentary.html");
+			?>
+		</td>
+		<? }else{ ?>
+		<td>
+			<b>Отзывов нет</b>
+		</td>
+		<? } ?>
+	</tr>
+</table>

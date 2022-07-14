@@ -1,0 +1,42 @@
+<script>
+// Смена валюты и пересчёт по курсу выбранной валюты.
+function changeCurrency(el) {
+	if (!el)
+		return;
+
+	console.log(el.value);
+}
+$(document).ready(function() {
+	// Изменение количества товара.
+	$('a.qt_up').click(function() {
+		$('input[name="quantity"]').val(parseInt($('input[name="quantity"]').val()) >= parseInt($('input[name="quantity"]').attr('max')) ? parseInt($('input[name="quantity"]').val()) : parseInt($('input[name="quantity"]').val()) + 1);
+	});
+	$('a.qt_down').click(function() {
+		$('input[name="quantity"]').val(parseInt($('input[name="quantity"]').val() - 1) > 0 ? parseInt($('input[name="quantity"]').val()) - 1 : 1);
+	});
+});
+</script>
+<!-- отображение корзины -->
+<div class="cart">
+	<div class="items">
+		<div class="item">
+			<div class="info">
+				<!-- элемент корзины -->
+				<img src="http://dummyimage.com/64x64/000/fff.jpg" alt="Изображение товара 1" />
+				<b>Название товара 1</b>
+				<div class="descr">
+					Это описание первого товара. Оно может быть сколь угодно большим, но отображаться будут лишь первые 3 строки.
+				</div>
+				<div class="price">
+					<span class="amount">1500</span>&nbsp;руб.
+				</div>
+			</div>
+			<div class="actions">
+				<b>Количество:</b><br />
+				<input type="number" name="quantity" min="0" max="2" value="1" readonly />
+				<a class="qt_up" href="#">+</a>&nbsp;/&nbsp;<a class="qt_down" href="#">-</a>
+				<br />
+			</div>
+		</div>
+	</div>
+</div>

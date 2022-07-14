@@ -1,0 +1,18 @@
+<div class="item">
+	<div class="image">
+		<? if (empty($item['img'])) { ?>
+		<img style="padding: 10px 0" src="/images/no_image.png" width="100px" alt="<?=$item['title']?>" />
+		<? }else{ ?>
+		<img src="<?=$item['img']?>" height="100px" alt="<?=$item['title']?>" />
+		<? } ?>
+	</div>
+	<div class="info">
+		<a href="/catalog/item/<?=$item['id']?>"><?=$item['title']?></a>
+	</div>
+	<div class="price">
+		<b><?=$item['price']?>₽</b>
+	</div>
+	<div class="button">
+		<a class="button-link green" href="#">в корзину</a>
+	</div>
+</div>

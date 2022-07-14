@@ -1,0 +1,39 @@
+{
+	"name":		"menu",
+	"keys":
+	{
+		"id":	"PRIMARY KEY AUTO_INCREMENT"
+	},
+	"fields":
+	{
+		"id":
+		{
+			"type":		"INT"
+		},
+		"title":
+		{
+			"type":		"TINYTEXT",
+			"defval":	"NOT NULL"
+		},
+		"page":
+		{
+			"type":		"TINYTEXT",
+			"defval":	"NOT NULL"
+		},
+		"hidden":
+		{
+			"type":		"BOOL",
+			"defval":	"0"
+		},
+		"position":
+		{
+			"type":		"SET($MenuPositions)",
+			"defval":	"NOT NULL"
+		},
+		"order":
+		{
+			"type":		"TINYINT",
+			"defval":	"NOT NULL"
+		}
+	}
+}

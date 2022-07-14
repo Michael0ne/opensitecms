@@ -1,0 +1,67 @@
+<div class="wrap-left">
+	<div class="bestdeal">
+		<h1>Внимание! Успей заказать!</h1>
+		<!-- здесь таймер (если есть) -->
+		<div class="timer">
+			<div class="number" id="days">
+				<span class="digit">0</span><span class="digit">5</span><span class="dots">:</span><br />
+				<div class="text">дней</div>
+			</div>
+			<div class="number" id="hours">
+				<span class="digit">1</span><span class="digit">9</span><span class="dots">:</span><br />
+				<div class="text">часов</div>
+			</div>
+			<div class="number" id="minutes">
+				<span class="digit">4</span><span class="digit">7</span><span class="dots">:</span><br />
+				<div class="text">минут</div>
+			</div>
+			<div class="number" id="seconds">
+				<span class="digit">1</span><span class="digit">5</span><br />
+				<div class="text">секунд</div>
+			</div>
+		</div>
+		<!-- здесь товары со скидкой (если есть) -->
+		<div class="items">
+			<?
+				Catalog::DisplayCatalogItems(array("onsale" => true), 4);
+			?>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<!-- новинки -->
+	<div class="newgoods">
+		<h2>Новинки</h2>
+		<div class="slider">
+			<div class="cont">
+				<?
+					Catalog::DisplayCatalogItems(array("new" => true), 4);
+				?>
+			</div>
+		</div>
+		<div class="right" style="margin-right: 10%; font-size: 90%">
+			<a href="/catalog/newgoods">Смотреть все новинки</a>
+		</div>
+	</div>
+	<!-- популярные товары -->
+	<div class="populargoods">
+		<h2>Популярные товары</h2>
+		<div class="slider">
+			<div class="cont">
+				<?
+					Catalog::DisplayCatalogItems(array("rating" => 4), 4);
+				?>
+			</div>
+		</div>
+		<div class="right" style="margin-right: 10%; font-size: 90%">
+			<a href="/catalog/popular">Смотреть все популярные товары</a>
+		</div>
+	</div>
+</div>
+<div class="wrap-right">
+	<!-- доп. кнопки (до 3 штук) -->
+	<div class="buttons">
+		<img src="/images/btn-test.jpg" alt="100% возврат денег" />
+	</div>
+	<? include_once("html/index.reviews.html") ?>
+</div>
+<div class="clearfix"></div>

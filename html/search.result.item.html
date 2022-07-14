@@ -1,0 +1,9 @@
+<li>
+	<span id="result-title">
+		<a href="/catalog/item/<?=$result_['id'] ?>"><?=$this->Highlight($result_['title']) ?></a>
+	</span>
+	<br />
+	<span id="result-brief">
+		<?=$this->Highlight(strip_tags($result_['description']))?>...
+	</span>
+</li>

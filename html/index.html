@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="charset" content="utf-8" />
+		<title><?= $this->title ?></title>
+		<style>
+			@import "/css/clearsans.css";
+		</style>
+		<link rel="stylesheet" type="text/css" href="/css/catalog.css" />
+		<script src="https://code.jquery.com/jquery-latest.js"></script>
+		<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+	</head>
+	<body>
+	<header>
+		<div class="logo">
+			<a href="/index"><img src="/images/logo.png" width="316" height="108" /></a><br />
+			<span class="logo-text">одежда для детей от 0 до 3-х лет</span>
+		</div>
+		<div class="cart">
+			<a class="link" href="/cart" alt="Корзина">Корзина</a>
+			<br /><br />
+			<span class="cart-details">
+				В вашей корзине<br />
+				<a href="/cart">10 товаров</a> на сумму 20 500 рублей
+			</span>
+			<br />
+			<a class="button-link green" href="/cart" alt="Оформить заказ">оформить заказ</a>
+		</div>
+		<div class="contacts">
+			<h1>Звоните!</h1>
+			<div class="phones">
+				8 (831) 724-55-33<br />8 (920) 724-55-44
+			</div>
+			<br />
+			<a class="button-link blue" style="margin-top: 0" href="#" alt="Заказать звонок" id="call">заказать звонок</a>
+		</div>
+	</header>
+	<navigation>
+		<div class="search">
+			<form action="/search" method="GET" id="searchform">
+				<input name="s" type="text" role="search" placeholder="Поиск" required />
+			</form>
+		</div>
+		<ul>
+			<?
+			foreach ($this->navigation as $navPage => $navTitle)
+				print "<li><a href=\"/{$navPage}\">{$navTitle}</a></li>";
+			?>
+		</ul>
+	</navigation>
+	<content>
+		<? if (!isset($this->error))
+			include_once("html/{$this->module}.{$this->action}.html");
+		else
+			include_once("html/errorpage.html");
+		?>
+	</content>
+	<navigation>
+		<div class="search">
+			<form action="/search" method="GET">
+				<input type="text" role="search" placeholder="Поиск" required />
+			</form>
+		</div>
+		<ul>
+			<?
+			foreach ($this->navigation as $navPage => $navTitle)
+				print "<li><a href=\"/{$navPage}\">{$navTitle}</a></li>";
+			?>
+		</ul>
+	</navigation>
+	<div class="mask">
+		<div class="modal">
+			<h2>Оставьте Ваши данные<br />и мы вам обязательно перезвоним!</h2>
+			<form action="" method="GET">
+				<input type="text" name="name" placeholder="Ваше имя:" required /><br />
+				<input type="text" name="phone" placeholder="Ваш телефон:" required /><br />
+				<input type="submit" />
+			</form>
+		</div>
+	</div>
+	<!-- Часть со скриптом -->
+	<script src="/js/main.js"></script>
+	</body>
+</html>

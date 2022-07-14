@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="charset" content="utf-8" />
+		<title><?= $this->title ?></title>
+		<style>
+			@import "http://webfonts.ru/import/clearsans.css";
+		</style>
+		<link rel="stylesheet" type="text/css" href="/css/catalog.css" />
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script src="/js/main.js"></script>
+	</head>
+	<body>
+	<header>
+		<div class="logo">
+			<a href="/index"><img src="/images/logo.png" width="316" height="108" /></a><br />
+			<i>одежда для детей от 0 до 3-х лет</i>
+		</div>
+		<div class="cart">
+			<a class="link" href="/cart" alt="Корзина">Корзина</a>
+			<br /><br />
+			<span class="cart-details">
+				В вашей корзине<br />
+				<a href="/cart">10 товаров</a> на сумму 20 500 рублей
+			</span>
+			<br />
+			<a class="button-link green" href="/cart" alt="Оформить заказ">оформить заказ</a>
+		</div>
+		<div class="contacts">
+			<h1>Звоните!</h1>
+			<div class="phones">
+				8 (831) 724-55-33<br />8 (920) 724-55-44
+			</div>
+			<br />
+			<a class="button-link blue" style="margin-top: 0" href="#" alt="Заказать звонок" id="call">заказать звонок</a>
+		</div>
+	</header>
+	<navigation>
+		<div class="search">
+			<form action="/search" method="GET">
+				<input name="s" type="text" role="search" placeholder="Поиск" required />
+			</form>
+		</div>
+		<ul>
+			<li><a href="/index">главная</a></li>
+			<li><a href="/catalog">каталог</a></li>
+			<li><a href="/delivery">доставка</a></li>
+			<li><a href="/payment">оплата</a></li>
+			<li><a href="/feedback">отзывы</a></li>
+		</ul>
+	</navigation>
+	<content>
+		<? if ($this->error == null)
+			include_once("html/" . strtolower(get_called_class()) . "." . $this->page . ".html");
+		else
+			include_once("html/errorpage.html");
+		?>
+	</content>
+	<navigation>
+		<div class="search">
+			<form action="/search" method="GET">
+				<input type="text" role="search" placeholder="Поиск" required />
+			</form>
+		</div>
+		<ul>
+			<li><a href="/index">главная</a></li>
+			<li><a href="/catalog">каталог</a></li>
+			<li><a href="/delivery">доставка</a></li>
+			<li><a href="/payment">оплата</a></li>
+			<li><a href="/feedback">отзывы</a></li>
+		</ul>
+	</navigation>
+	<div class="mask">
+		<div class="modal">
+			<h2>Оставьте Ваши данные<br />и мы вам обязательно перезвоним!</h2>
+			<form action="" method="GET">
+				<input type="text" name="name" placeholder="Ваше имя:" required /><br />
+				<input type="text" name="phone" placeholder="Ваш телефон:" required /><br />
+				<input type="submit" />
+			</form>
+		</div>
+	</div>
+	</body>
+</html>
