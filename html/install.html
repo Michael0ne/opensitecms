@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="charset" content="utf-8" />
+		<title><?= $this->title ?></title>
+
+		<link href="http://getbootstrap.com/docs/5.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="/css/install.css" rel="stylesheet" />
+		<script>
+			const FinalStepIndex = <?= $this->finalStepIndex ?>;
+		</script>
+	</head>
+	<body>
+		<header>
+			<h1>Установка OpenSiteCMS</h1>
+			<hr />
+			<span class="step-title">
+				<b>Шаг <?= $this->stepIndex ?>&nbsp;&ndash;&nbsp;<?= $this->stepTitle ?></b><br />
+			</span>
+			<span class="step-description"><?= $this->stepDescription ?></span>
+		</header>
+		<content>
+			<? include_once("html/install.{$this->page}.html") ?>
+			<br />
+			<div class="btn-group" role="group" aria-label="Навигация по шагам установщика">
+				<button type="button" class="btn btn-primary" id="btn-previous">Назад</button>
+				<button type="button" class="btn btn-primary" id="btn-next">Далее</button>
+			</div>
+		</content>
+		<script>
+			document.addEventListener("DOMContentLoaded", AddEvents);
+			
+			function AddEvents() {
+				const buttonPrevious = document.getElementById("btn-previous");
+				const buttonNext = document.getElementById("btn-next");
+				
+				if (buttonPrevious === undefined || buttonNext === undefined) {
+					console.error("Не найдены кнопки навигации по установщику!");
+					return;
+				}
+				
+				//	Узнать, на каком шаге сейчас находится пользователь.
+				const pageUrl = navigation.currentEntry.url.split('?');
+				let pagePath;
+				let pageArgs;
+				let stepIndex;
+
+				if (pageUrl.length > 1) {
+					pagePath = pageUrl[0].split('/');
+					pageArgs = pageUrl[1].split('&');
+				}else{
+					pagePath = pageUrl[0].split('/');
+				}
+				
+				const stepPart = pagePath[pagePath.length - 1].match(/[\d]+/g);
+				if (stepPart == null)
+					return;
+				
+				stepIndex = parseInt(stepPart[0]);
+				
+				//	Добавить действия кнопкам навигации.
+				if (stepIndex == 1) {
+					buttonPrevious.setAttribute('disabled', '');
+				}else{
+					buttonPrevious.setAttribute("data-step", "step" + (stepIndex - 1));
+				}
+
+				if (stepIndex == FinalStepIndex) {
+					buttonNext.innerText = "Завершить";
+					buttonNext.setAttribute("data-step", "finish");
+				}else{
+					buttonNext.setAttribute("data-step", "step" + (stepIndex + 1));
+				}
+
+				buttonPrevious.addEventListener("click", ButtonStepClicked);
+				buttonNext.addEventListener("click", ButtonStepClicked);
+			}
+			
+			function ButtonStepClicked() {
+				location.replace(this.dataset["step"]);
+			}
+		</script>
+	</body>
+</html>

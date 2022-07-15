@@ -49,11 +49,11 @@ class Base {
 	//	Константа определяющая номер ошибки SQL, когда таблица в БД не была найдена.
 	private const SQL_ERROR_TABLENOTFOUND = 1146;
 	//	Модуль, который будет использоваться по умолчанию.
-	private const MODULE_DEFAULT = "index";
+	public const MODULE_DEFAULT = "index";
 	//	Действие, которое будет использоваться по умолчанию.
-	private const ACTION_DEFAULT = "main";
+	public const ACTION_DEFAULT = "main";
 	//	Папка с модулями по умолчанию.
-	private const MODULES_FOLDER = "modules";
+	public const MODULES_FOLDER = "modules";
 
 	//	Название текущего модуля.
 	public const MODULE_NAME = "Базовый";
@@ -97,7 +97,7 @@ class Base {
 			foreach ($uriParts as $uriPart)
 			{
 				$keyValue = explode("=", $uriPart);
-				$this->params[$keyValue[0]] = $keyValue[1];
+				$this->params[$keyValue[0]] = isset($keyValue[1]) ? $keyValue[1] : null;
 			}
 		}
 
@@ -118,6 +118,13 @@ class Base {
 		#	Загрузка имён страниц.
 		if (file_exists("pagenames.json"))
 			$this->pageNames = json_decode(file_get_contents("pagenames.json"), true);
+		
+		#	В случае, если файла конфигурации не существует - подключить модуль установщика и запустить его.
+		if (!file_exists("conf.ig")) {
+			if ($this->module != "install")
+				Header("Location: /install");
+			return;
+		}
 		
 		#	Установить заголовок для страницы.
 		$this->MakeTitle();
@@ -461,6 +468,9 @@ class Base {
 			$this->error = $e->getMessage();
 			return;
 		}
+
+		if (empty($result))
+			return;
 
 		foreach ($result as $i => $parameter)
 			$this->shopInfo[$parameter["paramid"]] = array(
