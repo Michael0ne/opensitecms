@@ -1,0 +1,16 @@
+page-title Установка OpenSiteCMS
+step-button-next Далее
+step-button-prev Назад
+step-button-finish Завершить
+step-button-arialabel Навигация по шагам установки
+#	Шаги установки.
+step-title-template Шаг %1
+step-title-1 Подготовка
+step-title-2 Сбор сведений
+step-title-3 Создание файлов
+step-desc-1 На данном этапе будет произведена проверка возможности установки движка на данный сайт.
+step-desc-2 Производится сбор необходимых для установки сведений.
+step-desc-3 Нужные сведения были собраны и произойдёт создание файлов конфигурации.
+#	Сведения на шаге 1.
+step-1-phpver Версия PHP
+step-1-sqlext Расширения доступа к БД

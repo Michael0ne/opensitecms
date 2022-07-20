@@ -2,22 +2,6 @@
 
 //	Модуль установщика. Будет вызван в том случае, если файла с базовой конфигурацией найдено не будет.
 class Install extends Base {
-	//	Массив содержит информацию о шагах установщика.
-	private $stepInfo = array(
-		array(
-			"title" => "Подготовка",
-			"description" => "На данном этапе будет произведена проверка возможности установки движка на данный сайт."
-		),
-		array(
-			"title" => "Сбор сведений",
-			"description" => "Производится сбор необходимых для установки сведений."
-		),
-		array(
-			"title" => "Создание файлов",
-			"description" => "Нужные сведения были собраны и произойдёт создание файлов конфигурации."
-		)
-	);
-
 	//	Название модуля.
 	const MODULE_NAME = "Установка";
 	
@@ -26,12 +10,18 @@ class Install extends Base {
 	const CONFIG_VARNAME_DBLOGN = "db_login";
 	const CONFIG_VARNAME_DBPASS = "db_passw";
 	const CONFIG_VARNAME_DBDFDB = "db_defdb";
+
+	//	Необходимая для установки минимальная версия PHP.
+	const DEPENDENCY_PHPVERREQ = 8;
+	//	Сколько шагов предусматривает установщик.
+	const STEPS_TOTAL = 3;
 	
 	function __construct() {
-		$this->title = self::MODULE_NAME;
-		$this->finalStepIndex = count($this->stepInfo);
-		
 		parent::__construct($_SERVER['REQUEST_URI']);
+
+		$this->LoadLocalisation("installation");
+		$this->title = $this->Localise("page-title");
+		$this->finalStepIndex = self::STEPS_TOTAL;
 	}
 	
 	//	Отображение.
@@ -48,9 +38,6 @@ class Install extends Base {
 			return;
 		}
 
-		$this->stepTitle = $this->stepInfo[$this->stepIndex]["title"];
-		$this->stepDescription = $this->stepInfo[$this->stepIndex]["description"];
-
 		include_once("html/install.html");
 	}
 	
@@ -58,7 +45,28 @@ class Install extends Base {
 	//	Необходимо рассказать о последующих шагах и информации, которая будет собрана.
 	public function Step1($params = null) {
 		$this->page = "step1";
-		$this->stepIndex = 0;
+		$this->stepIndex = 1;
+
+		$extensions = get_loaded_extensions();
+		$params['extensions'] = $extensions;
+
+		#	Для этого шага нужно проверить, что версия PHP соответствует минимально необходимой, а также установлено расширение работы с SQL.
+		$params['sqlextensions'] = implode(", ", array_filter($extensions, function($v, $k) {
+			if (substr_count($v, "sql") != null)
+				return true;
+			else
+				return false;
+		}, ARRAY_FILTER_USE_BOTH));
+
+		$phpversion = null;
+		preg_match_all("/(?:[\w]+)/", phpversion(), $phpversion);
+
+		if ($phpversion != null) {
+			$params['phpok'] = (int)$phpversion[0][0] >= self::DEPENDENCY_PHPVERREQ;
+			$params['phprowstyle'] = "success";
+		}else{
+			$params['phprowstyle'] = "fail";
+		}
 
 		$this->Display($params);
 	}
@@ -67,7 +75,7 @@ class Install extends Base {
 	//	Необходимо собрать сведения о конфигурации.
 	public function Step2($params = null) {
 		$this->page = "step2";
-		$this->stepIndex = 1;
+		$this->stepIndex = 2;
 
 		$this->Display($params);
 	}
@@ -76,7 +84,7 @@ class Install extends Base {
 	//	Необходимо создать файл конфигурации, на основании собранных данных.
 	public function Step3($params = null) {
 		$this->page = "step3";
-		$this->stepIndex = 2;
+		$this->stepIndex = 3;
 
 		$this->Display($params);
 	}

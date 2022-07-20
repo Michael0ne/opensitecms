@@ -1,0 +1,14 @@
+<div class="container text-center">
+	<div class="row">
+		<div class="col"><?= $this->Localise("step-1-phpver") ?></div>
+		<div class="col <?= $params['phprowstyle'] ?>"><b><?= phpversion() ?></b></div>
+	</div>
+	<div class="row">
+		<div class="col"><?= $this->Localise("step-1-sqlext") ?></div>
+		<div class="col"><b><?= $params['sqlextensions'] ?></b></div>
+	</div>
+	<div class="row">
+		<div class="col"></div>
+		<div class="col"></div>
+	</div>
+</div>

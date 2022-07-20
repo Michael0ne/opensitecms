@@ -12,19 +12,19 @@
 	</head>
 	<body>
 		<header>
-			<h1>Установка OpenSiteCMS</h1>
+			<h1><?= $this->Localise("page-title") ?></h1>
 			<hr />
 			<span class="step-title">
-				<b>Шаг <?= $this->stepIndex ?>&nbsp;&ndash;&nbsp;<?= $this->stepTitle ?></b><br />
+				<b><?= $this->Localise("step-title-template", $this->stepIndex) ?>&nbsp;&ndash;&nbsp;<?= $this->Localise("step-title-{$this->stepIndex}") ?></b><br />
 			</span>
-			<span class="step-description"><?= $this->stepDescription ?></span>
+			<span class="step-description"><?= $this->Localise("step-desc-{$this->stepIndex}") ?></span>
 		</header>
 		<content>
 			<? include_once("html/install.{$this->page}.html") ?>
 			<br />
-			<div class="btn-group" role="group" aria-label="Навигация по шагам установщика">
-				<button type="button" class="btn btn-primary" id="btn-previous">Назад</button>
-				<button type="button" class="btn btn-primary" id="btn-next">Далее</button>
+			<div class="btn-group" role="group" aria-label="<?= $this->Localise("step-button-arialabel") ?>">
+				<button type="button" class="btn btn-primary" id="btn-previous"><?= $this->Localise("step-button-prev") ?></button>
+				<button type="button" class="btn btn-primary" id="btn-next"><?= $this->Localise("step-button-next") ?></button>
 			</div>
 		</content>
 		<script>
@@ -66,7 +66,7 @@
 				}
 
 				if (stepIndex == FinalStepIndex) {
-					buttonNext.innerText = "Завершить";
+					buttonNext.innerText = "<?= $this->Localise("step-button-finish") ?>";
 					buttonNext.setAttribute("data-step", "finish");
 				}else{
 					buttonNext.setAttribute("data-step", "step" + (stepIndex + 1));

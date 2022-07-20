@@ -36,6 +36,8 @@ class Base {
 	protected $pageNames;
 	//	Пункты меню (навигация).
 	protected $navigation;
+	//	Текущий язык.
+	protected $lang;
 
 	//	Активное подключение к БД.
 	private $currentDB;
@@ -57,6 +59,15 @@ class Base {
 
 	//	Название текущего модуля.
 	public const MODULE_NAME = "Базовый";
+	
+	//	Строка, отображаемая в случае, если локализуемой строки не найдено.
+	private const EMPTY_LOCALISED = "пусто";
+	//	Язык по умолчанию.
+	private const LANG_DEFAULT = "ru";
+	//	Директория с локализациями.
+	private const LANG_DIRECTORY = "localisation";
+	//	Возвращает название ключа, если он не найден, вместо строки по умолчанию.
+	private const LANG_RETKEYIFEMPTY = true;
 
 	//	Методы.
 
@@ -100,6 +111,9 @@ class Base {
 				$this->params[$keyValue[0]] = isset($keyValue[1]) ? $keyValue[1] : null;
 			}
 		}
+
+		#	Загрузить локализацию для базового модуля.
+		$this->LoadLocalisation("base");
 
 		#	Сформируем список доступных модулей и проверим, что выбранный модуль в него входит.
 		$this->GetAvailableModules();
@@ -417,12 +431,15 @@ class Base {
 	private function GetAvailableModules() {
 		if (isset($this->modules))
 			return $this->modules;
+		
+		#	Очистить кеш состояния файлов.
+		clearstatcache();
 
 		#	Просканируем директорию 'modules' на наличие модулей.
 		$modules = Array();
 		$modulesDir = opendir(self::MODULES_FOLDER);
 		while (false !== ($module = readdir($modulesDir)))
-			if (!is_dir($module))
+			if (!is_dir(self::MODULES_FOLDER . "/" . $module))
 				$modules[] = substr($module, 0, strpos($module, '.'));
 		closedir($modulesDir);
 		
@@ -496,6 +513,96 @@ class Base {
 			return null;
 		else
 			return $this->shopInfo[$fieldName]["value"];
+	}
+
+	//	Получить локализованную строку.
+	//	Вернёт локализованную строку для указанного языка.
+	//	Если язык не был указан, то будет применён язык по умолчанию.
+	public function Localise($key, ... $values) {
+		if (!isset($key))
+			return self::EMPTY_LOCALISED;
+
+		if (!isset($this->localisation[$key]))
+			if (self::LANG_RETKEYIFEMPTY)
+				return $key;
+			else
+				return self::EMPTY_LOCALISED;
+
+		if (!isset($this->lang))
+			$this->lang = self::LANG_DEFAULT;
+
+		if (!isset($this->localisation[$key][$this->lang]))
+			if (self::LANG_RETKEYIFEMPTY)
+				return $key;
+			else
+				return self::EMPTY_LOCALISED;
+
+		$localisedString = $this->localisation[$key][$this->lang];
+
+		$tokensPlaceholders = null;
+		preg_match_all("/(\%[\d]+)/", $localisedString, $tokensPlaceholders, PREG_SET_ORDER);
+		if (empty($tokensPlaceholders))
+			return $localisedString;
+
+		$index = 0;
+		foreach ($values as $value) {
+			$localisedString = str_replace($tokensPlaceholders[$index][0], $value, $localisedString);
+			$index++;
+		}
+
+		return $localisedString;
+	}
+
+	//	Загрузить локализованные строки из указанного файла и вернуть результат успешности этой операции.
+	//	В случае, если произойдёт ошибка загрузка - она будет записана и результат вернёт ложь.
+	//	TODO: хранение строк локализации в Redis?
+	public function LoadLocalisation($localisation) {
+		if (!isset($localisation))
+			return false;
+
+		$this->error = null;
+		$errorsFound = 0;
+		$languages = array('ru', 'en');
+		
+		$this->localisation = null;
+
+		foreach ($languages as $language) {
+			$languageFile = self::LANG_DIRECTORY . "/" . $localisation . "-" . $language . ".loc";
+			if (!file_exists($languageFile)) {
+				$this->error .= "Не найдено файла локализации {$localisation} для языка {$language}";
+				$errorsFound++;
+				
+				continue;
+			}
+
+			$languageFile = fopen($languageFile, "r");
+			while (!feof($languageFile)) {
+				$languageLine = fgets($languageFile);
+				if ($languageLine === false)
+					continue;
+
+				if ($languageLine[0] == '#')
+					continue;
+
+				$spacePos = strpos($languageLine, ' ');
+				if (!$spacePos)
+					continue;
+
+				$tokenName = substr($languageLine, 0, $spacePos);
+				if (is_int($tokenName))
+					continue;
+
+				$tokenVal = substr($languageLine, $spacePos + 1);
+
+				$this->localisation[$tokenName][$language] = trim($tokenVal);
+			}
+			fclose($languageFile);
+		}
+
+		if ($errorsFound)
+			return false;
+		else
+			return true;
 	}
 
 	//	Вывод контента.
